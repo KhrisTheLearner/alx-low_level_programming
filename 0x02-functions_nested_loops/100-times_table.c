@@ -1,51 +1,49 @@
 #include "main.h"
 
 /**
- * print_times_table - prints the n times table, starting with 0
- * @n: the number of the times table to be printed
- *
- * Return: void
+ * print_times_table - Print the `n` times table, starting with 0.
+ * Description: If `n` is greater than 15 or less than 0, print nothing.
+ * @n: int type number
  */
-void times_table(int n)
+void print_times_table(int n)
 {
-    int i, j;
+	int x = 0, y, z;
 
-    if (n < 0 || n > 15)
-        return;
+	if (n > 15 || n < 0)
+		return;
+	while (x <= n)
+	{
+		for (y = 0; y <= n; y++)
+		{
+			z = x * y;
+			if (z > 99)
+			{
+				_putchar(z / 100 + '0');
+				_putchar((z / 10 % 10) + '0');
+				_putchar(z % 10 + '0');
+			}
+			else if (z > 9)
+			{
+				_putchar(' ');
+				_putchar(z / 10 + '0');
+				_putchar(z % 10 + '0');
+			}
+			else if (y != 0)
+			{
+				_putchar(' ');
+				_putchar(' ');
+				_putchar(z + '0');
+			}
+			else
+				_putchar(z + '0');
 
-    for (i = 0; i <= n; i++)
-    {
-        for (j = 0; j <= n; j++)
-        {
-            if (j == 0)
-                _putchar('0');
-            else
-                _putchar(' ');
-
-            if (i * j < 10)
-            {
-                _putchar(' ');
-                _putchar(' ');
-                _putchar(i * j + '0');
-            }
-            else if (i * j < 100)
-            {
-                _putchar(' ');
-                _putchar(i * j / 10 + '0');
-                _putchar(i * j % 10 + '0');
-            }
-            else
-            {
-                _putchar(i * j / 100 + '0');
-                _putchar((i * j / 10) % 10 + '0');
-                _putchar(i * j % 10 + '0');
-            }
-
-            if (j != n)
-                _putchar(',');
-        }
-
-        _putchar('\n');
-    }
+			if (y != n)
+			{
+				_putchar(',');
+				_putchar(' ');
+			}
+		}
+		_putchar('\n');
+		x++;
+	}
 }
-
