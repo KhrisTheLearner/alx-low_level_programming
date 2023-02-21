@@ -7,6 +7,7 @@
  * Return: 0
  */
 int print_last_digit(int n)
+
 {
 	char c = abs(n % 10);
 	_putchar(c + '0');
