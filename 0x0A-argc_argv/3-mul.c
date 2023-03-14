@@ -1,63 +1,74 @@
+#include <stdio.h>
 #include "main.h"
-#include <limits.h>
-
 
 /**
- * print_number - print an integer
- * @n: the integer to print
+ * _atoi - converts a string to an integer
+ * @s: string to be converted
  *
- * Return: void
+ * Return: the int converted from the string
  */
-void print_number(int n)
+int _atoi(char *s)
 {
-	if (n > -1)
+	int i, d, n, len, f, digit;
+
+	i = 0;
+	d = 0;
+	n = 0;
+	len = 0;
+	f = 0;
+	digit = 0;
+
+	while (s[len] != '\0')
+		len++;
+
+	while (i < len && f == 0)
 	{
-		if (n > 9)
-			print_number(n / 10);
-		_putchar('0' + n % 10);
+		if (s[i] == ' ')
+			++d;
+
+		if (s[i] >= '0' && s[i] <= '9')
+		{
+			digit = s[i] - '0';
+			if (d % 2)
+				digit = -digit;
+			n = n * 10 + digit;
+			f = 1;
+			if (s[i + 1] < '0' || s[i + 1] > '9'
+
+				break;
+			f = 0;
+		}
+		i++;
 	}
-	else
-	{
-		_putchar('-');
-		if (n < -9)
-			print_number(n / -10);
-		_putchar('0' - n % 10);
-	}
+
+	if (f == 0)
+		return (0);
+
+	return (n);
 }
 
-
 /**
- * _puts - print a string, followed by a new line
- * @str: the string to print
+ * main - multiplies two numbers
+ * @argc: number of arguments
+ * @argv: array of arguments
  *
- * Return: void
- */
-void _puts(char *str)
-{
-	while (*str)
-		_putchar(*str++);
-	_putchar('\n');
-}
-
-
-/**
- * main - print the product of two numbers
- * @argc: size of the argument vector
- * @argv: program name and arguments
- *
- * Return: 1 if called with anything other than 2 arguments,
- * otherwise 0
+ * Return: 0 (Success), 1 (Error)
  */
 int main(int argc, char *argv[])
 {
-	if (argc != 3)
+	int result, num1, num2;
+
+	if (argc < 3 || argc > 3)
 	{
-		_puts("Error");
+		printf("Error\n");
 		return (1);
 	}
 
-	print_number(atoi(argv[1]) * atoi(argv[2]));
-	_putchar('\n');
+	num1 = _atoi(argv[1]);
+	num2 = _atoi(argv[2]);
+	result = num1 * num2;
+
+	printf("%d\n", result);
 
 	return (0);
 }
