@@ -41,23 +41,42 @@ void _puts(char *str)
 
 
 /**
- * main - print the product of two numbers
+ * isdigits - check if a string is a number
+ * @s: a pointer to the string to check
+ *
+ * Return: 1 if the string is a number,
+ * otherwise 0
+ */
+int isdigits(char *s)
+{
+	while ('0' <= *s && *s <= '9')
+		++s;
+	return (!*s);
+}
+
+
+/**
+ * main - print the sum of positive integers
  * @argc: size of the argument vector
  * @argv: program name and arguments
  *
- * Return: 1 if called with anything other than 2 arguments,
+ * Return: 1 if called with arguments containing non-digit symbols,
  * otherwise 0
  */
 int main(int argc, char *argv[])
 {
-	if (argc != 3)
+	int sum;
+
+	for (sum = 0; --argc; sum += atoi(*argv))
 	{
-		_puts("Error");
-		return (1);
+		if (!isdigits(*(++argv)))
+		{
+			_puts("Error");
+			return (1);
+		}
 	}
 
-	print_number(atoi(argv[1]) * atoi(argv[2]));
-	_putchar('\n');
+	printf("%d\n", sum);
 
 	return (0);
 }
