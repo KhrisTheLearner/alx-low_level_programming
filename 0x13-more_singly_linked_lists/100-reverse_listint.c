@@ -1,87 +1,40 @@
 #include "lists.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
- * looped_listint_len - Counts the number of unique nodes
- * in a looped listint_t linked list.
- * @head: A pointer to the head of the listint_t to check.
- * Return: If the list is not looped - 0.
- * Otherwise - the number of unique nodes in the list
+ * delete_nodeint_at_index - deletes a node in a linked list at a certain index
+ * @head: pointer to the first element in the list
+ * @index: index of the node to delete
+ *
+ * Return: 1 (Success), or -1 (Fail)
  */
-size_t looped_listint_len(const listint_t *head)
+int delete_nodeint_at_index(listint_t **head, unsigned int index)
 {
-	listint_t *slow, *fast;
-	size_t count = 0;
+	listint_t *temp = *head;
+	listint_t *current = NULL;
+	unsigned int i = 0;
 
-	if (!head)
-		return (0);
+	if (*head == NULL)
+		return (-1);
 
-	slow = (listint_t *)head;
-	fast = head->next;
-
-	while (fast && fast->next)
+	if (index == 0)
 	{
-		if (slow == fast)
-			break;
-
-		slow = slow->next;
-		fast = fast->next->next;
+		*head = (*head)->next;
+		free(temp);
+		return (1);
 	}
 
-	if (slow != fast)
-		return (0);
-
-	count = 1;
-	slow = slow->next;
-
-	while (slow != fast)
+	while (i < index - 1)
 	{
-		count++;
-		slow = slow->next;
+		if (!temp || !(temp->next))
+			return (-1);
+		temp = temp->next;
+		i++;
 	}
 
-	return (count);
-}
 
-/**
- * print_listint_safe - Prints a listint_t list safely.
- * @head: A pointer to the head of the listint_t list
- * Return: The number of nodes in the list.
- */
-size_t print_listint_safe(const listint_t *head)
-{
-	size_t count = 0;
-	listint_t *node;
-	int *visited = NULL, size = 0, i;
+	current = temp->next;
+	temp->next = current->next;
+	free(current);
 
-	if (!head)
-		return (0);
-
-	node = (listint_t *)head;
-	while (node)
-	{
-		for (i = 0; i < size; i++)
-		{
-			if (visited[i] == (int)node)
-			{
-				printf("-> [%p] %d\n", (void *)node, node->n);
-				return (count);
-			}
-		}
-
-		printf("[%p] %d\n", (void *)node, node->n);
-		count++;
-
-		visited = realloc(visited, sizeof(int) * (size + 1));
-		if (!visited)
-			exit(98);
-
-		visited[size] = (int)node;
-		size++;
-
-		node = node->next;
-	}
-
-	return (count);
+	return (1);
 }
