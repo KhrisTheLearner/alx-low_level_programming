@@ -17,35 +17,18 @@ void display_type(unsigned int e_type, unsigned char *e_ident);
 void display_entry(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf_file(int elf);
 
-/**
- * verify_elf - Verifies if a file is an ELF file.
- * @e_ident: A pointer to an array containing the ELF magic numbers.
- *
- * Description: If the file is not an ELF file - exit code 98.
- */
 void verify_elf(unsigned char *e_ident)
 {
-	int i;
-
-	for (i = 0; i < 4; i++)
+	if (e_ident[0] != 0x7f ||
+	    e_ident[1] != 'E' ||
+	    e_ident[2] != 'L' ||
+	    e_ident[3] != 'F')
 	{
-		if (e_ident[i] != 127 &&
-		    e_ident[i] != 'E' &&
-		    e_ident[i] != 'L' &&
-		    e_ident[i] != 'F')
-		{
-			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
-			exit(98);
-		}
+		dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
+		exit(98);
 	}
 }
 
-/**
- * display_magic - Displays the magic numbers of an ELF header.
- * @e_ident: A pointer to an array containing the ELF magic numbers.
- *
- * Description: Magic numbers are separated by spaces.
- */
 void display_magic(unsigned char *e_ident)
 {
 	int i;
@@ -63,10 +46,6 @@ void display_magic(unsigned char *e_ident)
 	}
 }
 
-/**
- * display_class - Displays the class of an ELF header.
- * @e_ident: A pointer to an array containing the ELF class.
- */
 void display_class(unsigned char *e_ident)
 {
 	printf(" Class: ");
@@ -87,10 +66,6 @@ void display_class(unsigned char *e_ident)
 	}
 }
 
-/**
- * display_data - Displays the data of an ELF header.
- * @e_ident: A pointer to an array containing the ELF class.
- */
 void display_data(unsigned char *e_ident)
 {
 	printf(" Data: ");
@@ -111,10 +86,6 @@ void display_data(unsigned char *e_ident)
 	}
 }
 
-/**
- *  * display_version - Displays the version of an ELF header.
- *   * @e_ident: A pointer to an array containing the ELF version.
- *    */
 void display_version(unsigned char *e_ident)
 {
 	 printf(" Version: %d",
@@ -131,10 +102,6 @@ void display_version(unsigned char *e_ident)
 	}
 }
 
-/**
- * display_osabi - Displays the OS/ABI of an ELF header.
- * @e_ident: A pointer to an array containing the ELF version.
- */
 void display_osabi(unsigned char *e_ident)
 {
 	printf(" OS/ABI: ");
@@ -176,21 +143,12 @@ void display_osabi(unsigned char *e_ident)
 	}
 }
 
-/**
- * display_abi - Displays the ABI version of an ELF header.
- * @e_ident: A pointer to an array containing the ELF ABI version.
- */
 void display_abi(unsigned char *e_ident)
 {
 	printf(" ABI Version: %d\n",
 		e_ident[EI_ABIVERSION]);
 }
 
-/**
- * display_type - Displays the type of an ELF header.
- * @e_type: The ELF type.
- * @e_ident: A pointer to an array containing the ELF class.
- */
 void display_type(unsigned int e_type, unsigned char *e_ident)
 {
 	if (e_ident[EI_DATA] == ELFDATA2MSB)
@@ -220,11 +178,6 @@ void display_type(unsigned int e_type, unsigned char *e_ident)
 	}
 }
 
-/**
- * display_entry - Displays the entry point of an ELF header.
- * @e_entry: The address of the ELF entry point.
- * @e_ident: A pointer to an array containing the ELF class.
- */
 void display_entry(unsigned long int e_entry, unsigned char *e_ident)
 {
 	printf(" Entry point address: ");
@@ -243,12 +196,6 @@ void display_entry(unsigned long int e_entry, unsigned char *e_ident)
 		printf("%#lx\n", e_entry);
 }
 
-/**
- * close_elf_file - Closes an ELF file.
- * @elf: The file descriptor of the ELF file.
- *
-  * Description: If the file cannot be closed - exit code 98.
- */
 void close_elf_file(int elf)
 {
 	if (close(elf) == -1)
@@ -259,17 +206,6 @@ void close_elf_file(int elf)
 	}
 }
 
-/**
- * main - Displays the information contained in the
- * ELF header at the start of an ELF file.
- * @argc: The number of arguments supplied to the program.
- * @argv: An array of pointers to the arguments.
- *
- * Return: 0 on success.
- *
- * Description: If the file is not an ELF File or
- * the function fails - exit code 98.
- */
 int main(int __attribute__((__unused__)) argc, char *argv[])
 {
 	Elf64_Ehdr *header;
@@ -312,4 +248,5 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 	close_elf_file(o);
 	return (0);
 }
+
 
