@@ -23,20 +23,15 @@ void close_elf(int elf);
  *
  * Description: If the file is not an ELF file - exit code 98.
  */
-void check_elf(unsigned char *e_ident)
+void verify_elf(unsigned char *e_ident)
 {
-	int index;
-
-	for (index = 0; index < 4; index++)
+	if (e_ident[0] != 0x7f ||
+	    e_ident[1] != 'E' ||
+	    e_ident[2] != 'L' ||
+	    e_ident[3] != 'F')
 	{
-		if (e_ident[index] != 127 &&
-		    e_ident[index] != 'E' &&
-		    e_ident[index] != 'L' &&
-		    e_ident[index] != 'F')
-		{
-			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
-			exit(98);
-		}
+		dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
+		exit(98);
 	}
 }
 
